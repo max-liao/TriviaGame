@@ -114,7 +114,6 @@ var trivia = {
         trivia.incorrect = 0;
         $("#display").text("Game Over");
 
-
     },
 
     start: function(){

@@ -52,16 +52,22 @@ var trivia = {
       
       [key, value] = Object.entries(questions)[index];
       $("#questions").html("Question: <br />" + value[0]);
+      $("#results").html("<br />");
       trivia.answer = value[1];
     },
 
-    timeOUT: function(){
+    timeOUT: function(valid){
         // console.log("Timeout");
         // console.log(trivia.i);
-        trivia.correct++;
+        if (valid == true){
+          trivia.correct++;
+        } else {
+          trivia.incorrect++;
+        }
         trivia.stop();
         trivia.time = 10;
-        trivia.start();
+        setTimeout(trivia.start, 3000);
+        // $("#results").text("");
     },
     
     true: function(size){
@@ -69,15 +75,11 @@ var trivia = {
         if (trivia.answer == true){
           console.log("Correct!");
           $("#results").html("Correct Answer!");
-        //   debugger;
-        setTimeout(trivia.timeOUT, 10000);
+          trivia.timeOUT(true);
         } else {
           console.log("Incorrect!");
           $("#results").html("Incorrect Answer!");
-          trivia.incorrect++;
-          trivia.stop();
-          trivia.time = 10;
-          trivia.start();
+          trivia.timeOUT(false);
         }
         if (trivia.i < (trivia.size-1)){
           trivia.i++;
@@ -93,11 +95,11 @@ var trivia = {
         if (trivia.answer == false){
           console.log("Correct!");
           $("#results").html("Correct Answer!");
-          trivia.correct++;
+          trivia.timeOUT(true);
         } else {
           console.log("Incorrect!");
-          $("#results").html("Incorrect Answer!");
-          trivia.incorrect++;
+          $("#results").html("Incorrect Answer! The correct answer was " + trivia.answer);
+          trivia.timeOUT(false);
         }
         if (trivia.i < (trivia.size-1)){
           trivia.i++;
@@ -105,7 +107,6 @@ var trivia = {
           trivia.displayscore();
           console.log("Out of questions - resetting!");
         }
-        // trivia.question(trivia.i);
       }
     },
 
@@ -139,7 +140,7 @@ var trivia = {
     displayscore: function(){
       trivia.clockRunning = false;
       $("#results").html("Correct answers: " + trivia.correct + "<br /> Incorrect answers: " + trivia.incorrect);
-      trivia.reset();
+      trivia.timeOUT();
     },
 
     count: function() {
@@ -151,8 +152,13 @@ var trivia = {
 
         // console.log(converted);
         if (converted == "00:00"){
-          console.log("TIMEOUT");
-          trivia.displayscore();
+          // console.log("TIMEOUT");
+          $("#display").text("TIMEOUT");
+          trivia.stop();
+          $("#results").text("The answer was " + trivia.answer);
+          trivia.time = 10;
+          trivia.i++;
+          setTimeout(trivia.start, 3000);
           // Use the variable we just created to show the converted time in the "display" div.
         } else {$("#display").text(converted);}
     },
