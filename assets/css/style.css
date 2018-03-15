@@ -33,12 +33,13 @@
     
       /* Visual */
       background: seagreen;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     #tester{
       color: white;
       font-size: 70px;
+      margin-bottom:20px;
     }
 
     #display {

@@ -49,9 +49,19 @@ var trivia = {
     },
 
     question: function(index){
+      
       [key, value] = Object.entries(questions)[index];
       $("#questions").html("Question: <br />" + value[0]);
       trivia.answer = value[1];
+    },
+
+    timeOUT: function(){
+        // console.log("Timeout");
+        // console.log(trivia.i);
+        trivia.correct++;
+        trivia.stop();
+        trivia.time = 10;
+        trivia.start();
     },
     
     true: function(size){
@@ -59,11 +69,15 @@ var trivia = {
         if (trivia.answer == true){
           console.log("Correct!");
           $("#results").html("Correct Answer!");
-          trivia.correct++;
+        //   debugger;
+        setTimeout(trivia.timeOUT, 10000);
         } else {
           console.log("Incorrect!");
           $("#results").html("Incorrect Answer!");
           trivia.incorrect++;
+          trivia.stop();
+          trivia.time = 10;
+          trivia.start();
         }
         if (trivia.i < (trivia.size-1)){
           trivia.i++;
@@ -71,7 +85,6 @@ var trivia = {
           console.log("Out of questions - resetting!");
           trivia.displayscore();
         }
-        trivia.question(trivia.i);
       }
     },
     
@@ -92,15 +105,12 @@ var trivia = {
           trivia.displayscore();
           console.log("Out of questions - resetting!");
         }
-        trivia.question(trivia.i);
+        // trivia.question(trivia.i);
       }
     },
 
     reset: function(){
-        // console.log("Resetting Game");
-        // $("#questions").html("Click start to play again!");
-        // $("#questions").text("Click start to play again!");
-        $("div#questions").replaceWith("<div id='test' /> Click start to play again! <div/>");
+        $("div#questions").replaceWith("<div id='tester'> Click start to play again! </div>");
         trivia.stop();
         trivia.clockRunning = false;
         trivia.time = 10;
@@ -122,6 +132,7 @@ var trivia = {
     stop: function() {
         // Use clearInterval to stop the count here and set the clock to not be running.
         clearInterval(clock);
+        clearTimeout();
         trivia.clockRunning = false;
     },
 

@@ -13,7 +13,7 @@ var clock;
 const response = new URL('http://www.omdbapi.com/?t=frozen&apikey=trilogy');
 
 var questions = {
-  one: ['I am a person', true],
+  one: ['This is a true/false question', true],
   two: ['The President won the popular vote', false],
   three: ['I am a dog', false],
   four: ['The President lost the popular vote', true],
@@ -49,6 +49,7 @@ var trivia = {
       
       // for (i = 0; i < size; i++){
       // }
+
     },
 
     question: function(index){
@@ -69,13 +70,13 @@ var trivia = {
           console.log("Incorrect!");
           trivia.incorrect++;
         }
+        trivia.question(trivia.i);
         if (trivia.i < (trivia.size-1)){
           trivia.i++;
         } else{
           console.log("Out of questions - resetting!");
           trivia.displayscore();
         }
-        trivia.question(trivia.i);
       }
     },
     
@@ -99,10 +100,12 @@ var trivia = {
     },
 
     reset: function(){
-        // console.log("Resetting Game");
-        // $("div#questions").html("Click start to play again!");
-        // $("div#questions").text("Click start to play again!");
-        $("div#questions").replaceWith("<div id='tester'> Click start to play again! </div>");
+        // $("div#questions").replaceWith("<div id='tester'> Click start to play again! </div>");
+        // $("#questions").replaceWith("<div id='tester'> Click start to play again! </div>");
+        
+        $("#questions").text("Click start to play again!");
+        if (trivia.correct > 0 || trivia.incorrect >0){$("#results").html("Correct answers: " + trivia.correct + "<br /> Incorrect answers: " + trivia.incorrect);}
+   
         trivia.stop();
         trivia.clockRunning = false;
         trivia.time = 30;
@@ -110,9 +113,12 @@ var trivia = {
         trivia.correct = 0;
         trivia.incorrect = 0;
         $("#display").text("Game Over");
+
+
     },
 
     start: function(){
+      $("#results").text("");
       if (!trivia.clockRunning) {
         clock = setInterval(trivia.count, 1000);
         trivia.clockRunning = true;
@@ -130,7 +136,8 @@ var trivia = {
     displayscore: function(){
       trivia.clockRunning = false;
       $("#results").html("Correct answers: " + trivia.correct + "<br /> Incorrect answers: " + trivia.incorrect);
-      trivia.reset();
+      // debugger;
+      setTimeout(trivia.reset(),10000);
     },
 
     count: function() {
